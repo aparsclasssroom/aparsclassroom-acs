@@ -12,38 +12,30 @@
 body {
   margin:0;
   font-family:Arial;
-
   background: linear-gradient(135deg,#0f172a,#1e3a8a,#0ea5e9);
   color:white;
-
   min-height:100vh;
-
   display:flex;
   justify-content:center;
   align-items:center;
-
   padding:20px;
   box-sizing:border-box;
 }
 
-/* CARD */
 .card {
   width:350px;
   max-width:95%;
   text-align:center;
-
   background:rgba(0,0,0,0.35);
   padding:30px;
   border-radius:20px;
-
   backdrop-filter: blur(10px);
   box-shadow:0 0 25px rgba(0,0,0,0.5);
 }
 
-/* JOIN BUTTON */
 .btn {
   margin-top:20px;
-  padding:14px 20px;
+  padding:14px;
   background:#22c55e;
   border:none;
   color:white;
@@ -53,11 +45,6 @@ body {
   width:100%;
 }
 
-.btn:hover {
-  background:#16a34a;
-}
-
-/* BANGLA SCROLL */
 .scroll-box {
   margin-top:15px;
   overflow:hidden;
@@ -80,17 +67,6 @@ body {
   0% { transform: translateX(0); }
   100% { transform: translateX(-100%); }
 }
-
-/* MOBILE FIX */
-@media (max-width: 480px) {
-  .card {
-    padding:20px;
-  }
-
-  .scroll-text {
-    font-size:13px;
-  }
-}
 </style>
 
 </head>
@@ -101,10 +77,9 @@ body {
 
   <h2>Welcome to ACS</h2>
 
-  <!-- BANGLA TEXT -->
   <div class="scroll-box">
     <div class="scroll-text">
-      ⚡ ACS-এ আপনাকে স্বাগতম | আপনাকে আগামী ১৫৮ ঘন্টার মধ্যে একটি মেসেজ দেওয়া হবে।সেখানে আপনার  কোডের সাথে মেসেজে প্রদানকৃত ১০ টি কোডের সাথে যে কোনো একটি মিলে গেলে ,আপনি পেতে পারেন একটি ইঞ্জিনিয়ারিং প্রশ্ন ব্যংক।বিস্তারিত ফেসবুকে দেখুন।শুভকামনা আপনাকে ⚡
+      ⚡ ACS-এ আপনাকে স্বাগতম |আপনার ফোনে একটি মেসেজ পাঠানো হবে।সেখানে থাকা ১০ টি কোডের একটি আপনার কোডের সাথে মিলে  গেলে আপনি পাবেন এসিএস এর একটি ইঞ্জিনিয়ারিং প্রশ্ন ব্যাংক।বিস্তারিত ফেসবুকে।⚡
     </div>
   </div>
 
@@ -119,40 +94,29 @@ body {
 
 </div>
 
-<script type="module">
+<script>
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+/* SHOW USER CODE */
+document.getElementById("code").innerText =
+  localStorage.getItem("userCode") || "ACS000000";
 
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID"
-};
+/* 🔥 FIXED START TIME (BD TIME SAFE) */
+const start = new Date("2026-04-17T21:52:00+06:00"); // 9:52 PM BD
+const duration = 13 * 60 * 60 * 1000; // 13 hours
 
-initializeApp(firebaseConfig);
-
-const code = localStorage.getItem("userCode");
-const startTime = Number(localStorage.getItem("startTime"));
-
-document.getElementById("code").innerText = code || "NO CODE";
-
-/* JOIN CLASS */
-window.joinClass = function () {
-  window.location.href =
-    "https://aparsclassroom.com/shop/dashboard/login";
-};
-
-/* TIMER */
-const duration = 158 * 60 * 60 * 1000;
+const END_TIME = start.getTime() + duration;
 
 function updateTimer() {
 
-  if (!startTime) {
-    document.getElementById("timer").innerText = "NO TIMER DATA";
+  const now = Date.now();
+
+  if (now < start.getTime()) {
+    document.getElementById("timer").innerText = "STARTS AT 9:52 PM";
+    setTimeout(updateTimer, 1000);
     return;
   }
 
-  const left = startTime + duration - Date.now();
+  const left = END_TIME - now;
 
   if (left <= 0) {
     document.getElementById("timer").innerText = "EXPIRED";
@@ -170,6 +134,12 @@ function updateTimer() {
 }
 
 updateTimer();
+
+/* JOIN BUTTON */
+function joinClass() {
+  window.location.href =
+    "https://aparsclassroom.com/shop/dashboard/login";
+}
 
 </script>
 
